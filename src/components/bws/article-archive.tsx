@@ -54,21 +54,21 @@ export function ArticleArchive() {
   return (
     <>
       <motion.section
-        className="mx-auto max-w-8xl px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16 text-center"
+        className="mx-auto max-w-7xl px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <p className="text-xs font-semibold uppercase tracking-widest text-sky-700">Kabar Balai</p>
         <h1 className="mt-1 text-3xl sm:text-5xl font-bold tracking-tight text-gray-900">
-          Arsip Berita
+          Semua Berita
         </h1>
         <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-500 px-2">
           Semua berita dan informasi terkini BWS Sumatera I
         </p>
       </motion.section>
 
-      <section className="mx-auto max-w-8xl px-4 sm:px-6 pb-16 sm:pb-20">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-16 sm:pb-20">
         {isLoading ? (
           <ArticleGridSkeleton />
         ) : (

@@ -94,3 +94,68 @@ export interface WebsiteResponse {
   dataInfografis: ProductItem[];
   dataPejabat: ProductItem[];
 }
+
+export interface WebsitePageDetail {
+  id: number;
+  slug: string;
+  judul?: string;
+  title?: string;
+  nama?: string;
+  isi?: string;
+  content?: string;
+  deskripsi?: string;
+  image?: string;
+  image_caption?: string;
+  iframe?: string;
+  metadesc?: string;
+  created_at?: string;
+  updated_at?: string;
+  categories?: { id: number; name: string; alias?: string };
+  parents?: WebsitePageDetail | null;
+}
+
+export interface WebsitePageResponse {
+  category?: unknown[];
+  articles?: Paginated<WebsiteArticle>;
+  article?: WebsitePageDetail | null;
+  menus?: MenuItem[];
+}
+
+export interface WebsiteArticleDetail {
+  id: number;
+  judul: string;
+  slug: string;
+  kategori_id: number;
+  isi: string;
+  published: number;
+  created_at: string;
+  created_by?: number;
+  updated_at?: string;
+  updated_by?: number;
+  publish_up?: string;
+  image: string;
+  image_caption?: string;
+  language?: string;
+  categories?: { id: number; name: string; alias?: string };
+}
+
+export interface WebsiteArticleDetailResponse {
+  category?: { id: number; name: string; alias: string }[];
+  articles?: Paginated<WebsiteArticle>;
+  article?: WebsiteArticleDetail | null;
+  menus?: MenuItem[];
+}
+
+export interface WebsiteCategoryResponse {
+  title?: string;
+  articles?: Paginated<WebsiteArticle>;
+  menus?: MenuItem[];
+  search?: string;
+}
+
+export type CmsContent =
+  | { kind: "page"; detail: WebsitePageDetail; menus: MenuItem[]; latest: WebsiteArticle[] }
+  | { kind: "product"; detail: WebsitePageDetail }
+  | { kind: "article"; detail: WebsitePageDetail }
+  | { kind: "category"; title: string; articles: WebsiteArticle[]; menus: MenuItem[] }
+  | null;

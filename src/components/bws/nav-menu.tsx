@@ -6,11 +6,21 @@ import type { MenuItem } from "@/lib/types";
 
 export function menuHref(m: MenuItem): string {
   if (m.url?.startsWith("http")) return m.url;
-  // Top-level "Berita" menu uses url "article" -> public archive route
+  // Top-level "Berita" menu uses url "article(s)" -> public archive route
   if (m.url === "article" || m.url === "articles") return "/articles";
   if (m.url) return `/${m.url.replace(/^\/+/, "")}`;
-  if (m.slug) return `/articles/${m.slug}`;
+  // Static pages (profil, faq, ...) resolve via the [...slug] CMS route
+  // which tries page -> product -> article detail APIs.
+  if (m.slug) return `/${m.slug}`;
   return "/query";
+}
+
+// Only external links may open a new tab; internal menu links
+// (including parents that toggle submenus) always stay in the same tab,
+// regardless of the `target` value from the API.
+export function menuTarget(m: MenuItem): "_blank" | undefined {
+  const href = menuHref(m);
+  return m.target === "_blank" && /^https?:\/\//.test(href) ? "_blank" : undefined;
 }
 
 function hasChildren(m: MenuItem): boolean {
@@ -71,7 +81,7 @@ function DesktopItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
       <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
         <Link
           href={menuHref(item)}
-          target={item.target === "_blank" ? "_blank" : undefined}
+          target={menuTarget(item)}
           onClick={handleClick}
           aria-expanded={hasChildren(item) ? open : undefined}
           className="flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
@@ -100,12 +110,12 @@ function DesktopItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
     <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <Link
         href={menuHref(item)}
-        target={item.target === "_blank" ? "_blank" : undefined}
+        target={menuTarget(item)}
         onClick={handleClick}
         aria-expanded={hasChildren(item) ? open : undefined}
         className="flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
       >
-        <span className="truncate">{item.judul}</span>
+        <span className="min-w-0 flex-1 line-clamp-2">{item.judul}</span>
         {hasChildren(item) && <Chevron className="h-3.5 w-3.5 shrink-0 opacity-50" />}
       </Link>
       {hasChildren(item) && (
@@ -168,7 +178,7 @@ function MobileItem({
         ) : (
           <Link
             href={menuHref(item)}
-            target={item.target === "_blank" ? "_blank" : undefined}
+            target={menuTarget(item)}
             className={`flex-1 rounded-xl px-3 py-2 text-sm font-medium ${
               depth === 0 ? "text-gray-900" : "text-gray-600"
             } hover:bg-gray-50`}
@@ -220,7 +230,7 @@ export function MobileNav({ menus }: { menus: MenuItem[] }) {
       </button>
       {open && (
         <div className="absolute inset-x-0 top-full border-b border-gray-100 bg-white shadow-xl">
-          <div className="mx-auto max-h-[70vh] max-w-8xl space-y-1 overflow-y-auto px-4 py-3">
+          <div className="mx-auto max-h-[70vh] max-w-7xl space-y-1 overflow-y-auto px-4 py-3">
             {menus.map((m) => (
               <MobileItem key={m.id} item={m} expanded={expanded} onToggle={toggle} />
             ))}

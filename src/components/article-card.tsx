@@ -20,7 +20,7 @@ export function ArticleCard({
         href={`/articles/${article.slug}`}
         className="group block rounded-3xl bg-gray-50 p-2.5 sm:p-3 transition-all duration-300 hover:ring ring-gray-100 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)]"
       >
-        <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-gray-200">
+        <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-gray-200">
           <Image
             src={article.image}
             alt={article.title}

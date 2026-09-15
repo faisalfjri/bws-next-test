@@ -5,7 +5,7 @@ import { ArticleArchive } from "@/components/bws/article-archive";
 import { getWebsite } from "@/lib/bws";
 
 export const metadata: Metadata = {
-  title: "Arsip Berita - BWS Sumatera I",
+  title: "Semua Berita - BWS Sumatera I",
   description:
     "Arsip semua berita dan informasi terkini Balai Wilayah Sungai Sumatera I.",
 };

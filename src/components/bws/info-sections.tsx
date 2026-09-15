@@ -64,7 +64,7 @@ export function InfoSections({
 }) {
   return (
     <div className="border-t border-gray-100 bg-gray-50/60">
-      <section className="mx-auto grid max-w-8xl gap-8 lg:gap-10 px-4 sm:px-6 py-8 sm:py-14 lg:grid-cols-3">
+      <section className="mx-auto grid max-w-7xl gap-8 lg:gap-10 px-4 sm:px-6 py-8 sm:py-14 lg:grid-cols-3">
         <div className="min-w-0 lg:col-span-1">
           <SectionTitle kicker="Informasi" title="Pengumuman" />
           <div className="space-y-3">

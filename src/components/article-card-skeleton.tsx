@@ -1,7 +1,7 @@
 export function ArticleCardSkeleton() {
   return (
     <div className="rounded-3xl bg-gray-50 p-2.5 sm:p-3 animate-pulse">
-      <div className="aspect-[16/10] rounded-2xl bg-gray-100" />
+      <div className="aspect-[4/3] rounded-2xl bg-gray-100" />
       <div className="px-1 pt-2.5 sm:pt-3 pb-1.5 sm:pb-2 space-y-2">
         <div className="h-3 w-24 rounded bg-gray-100" />
         <div className="h-5 w-full rounded bg-gray-100" />

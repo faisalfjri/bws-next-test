@@ -9,7 +9,7 @@ export function NewsGrid({ articles }: { articles: WebsiteArticle[] }) {
   const [headline, ...rest] = articles;
 
   return (
-    <section className="mx-auto max-w-8xl px-4 sm:px-6 py-8 sm:py-14">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-14">
       <div className="mb-5 sm:mb-6 flex items-end justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-widest text-sky-700">Kabar Balai</p>
@@ -56,7 +56,7 @@ export function NewsGrid({ articles }: { articles: WebsiteArticle[] }) {
               href={`/articles/${a.slug}`}
               className="group block rounded-3xl bg-gray-50 p-2.5 transition-all duration-300 hover:ring ring-gray-100 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)]"
             >
-              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gray-200">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-200">
                 <Image
                   src={resolveArticleImage(a.image)}
                   alt={a.judul}
