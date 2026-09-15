@@ -28,8 +28,8 @@ export function ArticleDetail({ slug }: { slug: string }) {
       <main className="min-h-screen bg-white flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Artikel Tidak Ditemukan</h1>
-          <Link href="/" className="mt-4 inline-block text-sm text-gray-500 hover:text-gray-900 transition">
-            Kembali ke beranda
+          <Link href="/articles" className="mt-4 inline-block text-sm text-gray-500 hover:text-gray-900 transition">
+            Kembali ke arsip berita
           </Link>
         </div>
       </main>
@@ -45,7 +45,7 @@ export function ArticleDetail({ slug }: { slug: string }) {
           transition={{ duration: 0.3 }}
         >
           <Link
-            href="/"
+            href="/articles"
             className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 text-gray-500 hover:text-gray-900 hover:border-gray-300 transition mb-6 sm:mb-10"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

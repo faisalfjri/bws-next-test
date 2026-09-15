@@ -59,7 +59,7 @@ export default function FetchPage() {
   return (
     <main className="min-h-screen bg-white">
       <motion.section
-        className="mx-auto max-w-6xl px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16 text-center"
+        className="mx-auto max-w-8xl px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -75,7 +75,7 @@ export default function FetchPage() {
         </p>
       </motion.section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-20">
+      <section className="mx-auto max-w-8xl px-4 sm:px-6 pb-16 sm:pb-20">
         {isInitialLoad ? (
           <ArticleGridSkeleton />
         ) : (
