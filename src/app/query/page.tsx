@@ -1,95 +1,83 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import type { ArticlesResponse } from "@/lib/types";
-import { ArticleCard } from "@/components/article-card";
-import { ArticleGridSkeleton } from "@/components/article-card-skeleton";
-import api from "@/lib/api";
 
-const fetchArticles = async ({ pageParam = "/articles" }: { pageParam?: string }): Promise<ArticlesResponse> => {
-  const { data } = await api.get<ArticlesResponse>(pageParam);
-  return data;
-};
+const methods = [
+  {
+    href: "/query/fetch",
+    title: "Native Fetch",
+    description: "Menggunakan fetch() API bawaan browser",
+    color: "bg-gray-100 text-gray-700",
+  },
+  {
+    href: "/query/axios",
+    title: "Axios",
+    description: "Menggunakan axios untuk HTTP request",
+    color: "bg-blue-50 text-blue-700",
+  },
+  {
+    href: "/query/react-query",
+    title: "React Query",
+    description: "Menggunakan @tanstack/react-query dengan infinite query",
+    color: "bg-green-50 text-green-700",
+  },
+];
 
-export default function QueryPage() {
-  const sentinelRef = useRef<HTMLDivElement>(null);
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ["articles-query"],
-    queryFn: fetchArticles,
-    initialPageParam: "/articles",
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.next_page_url) return undefined;
-      const url = new URL(lastPage.next_page_url);
-      const path = url.pathname.replace(/^\/api/, "");
-      return path + url.search;
-    },
-  });
-
-  const articles = data?.pages.flatMap((page) => page.data) ?? [];
-
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
+export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <motion.section
-        className="mx-auto max-w-6xl px-4 sm:px-6 pt-12 sm:pt-20 pb-10 sm:pb-16 text-center"
+        className="mx-auto max-w-3xl px-4 sm:px-6 pt-20 sm:pt-32 pb-16 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="inline-block mb-4 rounded-full bg-green-50 px-4 py-1.5 text-xs font-medium text-green-600">
-          React Query
-        </span>
         <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-gray-900">
-          BWS Sumatera I
+          Perbandingan Data Fetching
         </h1>
-        <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-500 px-2">
-          Menggunakan <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@tanstack/react-query</code> dengan infinite query
+        <p className="mt-4 text-sm sm:text-base text-gray-500">
+          3 cara berbeda mengambil data dari API dengan infinite scroll
         </p>
       </motion.section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-20">
-        {isLoading ? (
-          <ArticleGridSkeleton />
-        ) : (
-          <div className="grid gap-6 sm:gap-x-8 sm:gap-y-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {articles.map((article, index) => (
-              <ArticleCard key={article.id} article={article} priority={index < 6} />
-            ))}
-          </div>
-        )}
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 pb-20">
+        <div className="space-y-4">
+          {methods.map((method, index) => (
+            <motion.div
+              key={method.href}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+            >
+              <Link
+                href={method.href}
+                className="group flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 transition-all duration-300 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)]"
+              >
+                <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl text-sm font-semibold ${method.color}`}>
+                  {method.title.charAt(0)}
+                </span>
+                <div className="flex-1">
+                  <h2 className="text-base font-semibold text-gray-900 group-hover:text-gray-600 transition-colors">
+                    {method.title}
+                  </h2>
+                  <p className="text-sm text-gray-500">{method.description}</p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </section>
-
-      <div ref={sentinelRef} className="pb-10 sm:pb-12 text-center">
-        {isFetchingNextPage && (
-          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-gray-900" />
-        )}
-        {!hasNextPage && articles.length > 0 && (
-          <p className="text-sm text-gray-400">Semua artikel sudah dimuat</p>
-        )}
-      </div>
     </main>
   );
 }
